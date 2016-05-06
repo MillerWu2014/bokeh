@@ -1331,9 +1331,25 @@ class TriangleGLGlyph extends MarkerGLGlyph
     }
     """
 
+class InvertedTriangleGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'invertedtriangle'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        // Diamond
+        float x = SQRT_2 / 2.0 * (P.x * 1.6 - P.y);
+        float y = SQRT_2 / 2.0 * (P.x * 1.6 + P.y);
+        float r1 = max(abs(x), abs(y)) - size / 1.6;
+        float r2 = - P.y;
+        return max(r1, r2);  // Instersect diamond with rectangle
+    }
+    """
+
 module.exports =
   LineGLGlyph: LineGLGlyph
   CircleGLGlyph: CircleGLGlyph
   SquareGLGlyph: SquareGLGlyph
   DiamondGLGlyph: DiamondGLGlyph
-  TriangleGLGlyph: TriangleGLGlyph
+  InvertedTriangleGLGlyph: InvertedTriangleGLGlyph
