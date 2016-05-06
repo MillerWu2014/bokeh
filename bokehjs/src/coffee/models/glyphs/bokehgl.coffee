@@ -1297,8 +1297,24 @@ class SquareGLGlyph extends MarkerGLGlyph
     }
     """
 
+class DiamondGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'diamond'
+
+  MARKERCODE: """
+    // --- diamond
+    float marker(vec2 P, float size)
+    {
+        float x = SQRT_2 / 2.0 * (P.x * SQRT_2 - P.y);
+        float y = SQRT_2 / 2.0 * (P.x * SQRT_2 + P.y);
+        float r1 = max(abs(x), abs(y)) - size / (2.0 * SQRT_2);
+        return r1;
+    }
+    """
+
 
 module.exports =
+  LineGLGlyph: LineGLGlyph
   CircleGLGlyph: CircleGLGlyph
   SquareGLGlyph: SquareGLGlyph
-  LineGLGlyph: LineGLGlyph
+  DiamondGLGlyph: DiamondGLGlyph
