@@ -1444,6 +1444,75 @@ class DiamondCrossGLGlyph extends MarkerGLGlyph
     }
     """
 
+class XGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'x'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        float square = max(abs(P.x), abs(P.y)) - size/2.0;
+        float X = min(abs(P.x - P.y), abs(P.x + P.y)) - size / 100.0;  // bit of "width" for aa
+        return max(square, X);
+    }
+    """
+
+class CircleXGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'circlex'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        float x = P.x - P.y;
+        float y = P.x + P.y;
+        // Define quadrants
+        float qs = size / 2.0;  // quadrant size
+        float s1 = max(abs(x - qs), abs(y - qs)) - qs;
+        float s2 = max(abs(x + qs), abs(y - qs)) - qs;
+        float s3 = max(abs(x - qs), abs(y + qs)) - qs;
+        float s4 = max(abs(x + qs), abs(y + qs)) - qs;
+        // Intersect main shape with quadrants (to form cross)
+        float circle = length(P) - size/2.0;
+        float c1 = max(circle, s1);
+        float c2 = max(circle, s2);
+        float c3 = max(circle, s3);
+        float c4 = max(circle, s4);
+        // Union
+        float almost = min(min(min(c1, c2), c3), c4);
+        // In this case, the X is also outside of the main shape
+        float square = max(abs(P.x), abs(P.y)) - size/2.0;
+        float X = min(abs(P.x - P.y), abs(P.x + P.y)) - size / 100.0;  // bit of "width" for aa
+        return min(max(X, square), almost);
+    }
+    """
+
+class SquareXGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'squarex'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        float x = P.x - P.y;
+        float y = P.x + P.y;
+        // Define quadrants
+        float qs = size / 2.0;  // quadrant size
+        float s1 = max(abs(x - qs), abs(y - qs)) - qs;
+        float s2 = max(abs(x + qs), abs(y - qs)) - qs;
+        float s3 = max(abs(x - qs), abs(y + qs)) - qs;
+        float s4 = max(abs(x + qs), abs(y + qs)) - qs;
+        // Intersect main shape with quadrants (to form cross)
+        float square = max(abs(P.x), abs(P.y)) - size/2.0;
+        float c1 = max(square, s1);
+        float c2 = max(square, s2);
+        float c3 = max(square, s3);
+        float c4 = max(square, s4);
+        // Union
+        return min(min(min(c1, c2), c3), c4);
+    }
+    """
+
 module.exports =
   LineGLGlyph: LineGLGlyph
   CircleGLGlyph: CircleGLGlyph
@@ -1456,3 +1525,6 @@ module.exports =
   CircleCrossGLGlyph: CircleCrossGLGlyph
   SquareCrossGLGlyph: SquareCrossGLGlyph
   DiamondCrossGLGlyph: DiamondCrossGLGlyph
+  XGLGlyph: XGLGlyph
+  CircleXGLGlyph: CircleXGLGlyph
+  SquareXGLGlyph: SquareXGLGlyph
