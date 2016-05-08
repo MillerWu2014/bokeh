@@ -1357,6 +1357,93 @@ class InvertedTriangleGLGlyph extends MarkerGLGlyph
     }
     """
 
+class CrossGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'cross'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        float square = max(abs(P.x), abs(P.y)) - size/2.0;
+        float cross = min(abs(P.x), abs(P.y)) - size / 100.0;  // bit of "width" for aa
+        return max(square, cross);
+    }
+    """
+
+class CircleCrossGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'circlecross'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        // Define quadrants
+        float qs = size / 4.0;  // quadrant size
+        float s1 = max(abs(P.x - qs), abs(P.y - qs)) - qs;
+        float s2 = max(abs(P.x + qs), abs(P.y - qs)) - qs;
+        float s3 = max(abs(P.x - qs), abs(P.y + qs)) - qs;
+        float s4 = max(abs(P.x + qs), abs(P.y + qs)) - qs;
+        // Intersect main shape with quadrants (to form cross)
+        float circle = length(P) - size/2.0;
+        float c1 = max(circle, s1);
+        float c2 = max(circle, s2);
+        float c3 = max(circle, s3);
+        float c4 = max(circle, s4);
+        // Union
+        return min(min(min(c1, c2), c3), c4);
+    }
+    """
+
+class SquareCrossGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'squarecross'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        // Define quadrants
+        float qs = size / 4.0;  // quadrant size
+        float s1 = max(abs(P.x - qs), abs(P.y - qs)) - qs;
+        float s2 = max(abs(P.x + qs), abs(P.y - qs)) - qs;
+        float s3 = max(abs(P.x - qs), abs(P.y + qs)) - qs;
+        float s4 = max(abs(P.x + qs), abs(P.y + qs)) - qs;
+        // Intersect main shape with quadrants (to form cross)
+        float square = max(abs(P.x), abs(P.y)) - size/2.0;
+        float c1 = max(square, s1);
+        float c2 = max(square, s2);
+        float c3 = max(square, s3);
+        float c4 = max(square, s4);
+        // Union
+        return min(min(min(c1, c2), c3), c4);
+    }
+    """
+
+class DiamondCrossGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'diamondcross'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        // Define quadrants
+        float qs = size / 4.0;  // quadrant size
+        float s1 = max(abs(P.x - qs), abs(P.y - qs)) - qs;
+        float s2 = max(abs(P.x + qs), abs(P.y - qs)) - qs;
+        float s3 = max(abs(P.x - qs), abs(P.y + qs)) - qs;
+        float s4 = max(abs(P.x + qs), abs(P.y + qs)) - qs;
+        // Intersect main shape with quadrants (to form cross)
+        float x = SQRT_2 / 2.0 * (P.x * 1.5 - P.y);
+        float y = SQRT_2 / 2.0 * (P.x * 1.5 + P.y);
+        float diamond = max(abs(x), abs(y)) - size / (2.0 * SQRT_2);
+        float c1 = max(diamond, s1);
+        float c2 = max(diamond, s2);
+        float c3 = max(diamond, s3);
+        float c4 = max(diamond, s4);
+        // Union
+        return min(min(min(c1, c2), c3), c4);
+    }
+    """
+
 module.exports =
   LineGLGlyph: LineGLGlyph
   CircleGLGlyph: CircleGLGlyph
@@ -1365,3 +1452,7 @@ module.exports =
   DiamondGLGlyph: DiamondGLGlyph
   TriangleGLGlyph: TriangleGLGlyph
   InvertedTriangleGLGlyph: InvertedTriangleGLGlyph
+  CrossGLGlyph: CrossGLGlyph
+  CircleCrossGLGlyph: CircleCrossGLGlyph
+  SquareCrossGLGlyph: SquareCrossGLGlyph
+  DiamondCrossGLGlyph: DiamondCrossGLGlyph

@@ -1,7 +1,11 @@
 _ = require "underscore"
 Marker = require "./marker"
+bokehgl = require "../glyphs/bokehgl"
 
 class DiamondCrossView extends Marker.View
+
+  _init_gl: (gl) ->
+    @glglyph = new bokehgl.DiamondCrossGLGlyph(gl, this)
 
   _render: (ctx, indices, {sx, sy, _size, _angle}) ->
     for i in indices
