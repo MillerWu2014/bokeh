@@ -1513,6 +1513,21 @@ class SquareXGLGlyph extends MarkerGLGlyph
     }
     """
 
+class AsteriskGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'asterisk'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        float circle = length(P) - size/2.0;
+        float X = min(abs(P.x - P.y), abs(P.x + P.y)) - size / 100.0;  // bit of "width" for aa
+        float cross = min(abs(P.x), abs(P.y)) - size / 100.0;  // bit of "width" for aa
+        float asterisk = min(X, cross);
+        return max(circle, asterisk);  // limit to size of circle
+    }
+    """
+
 module.exports =
   LineGLGlyph: LineGLGlyph
   CircleGLGlyph: CircleGLGlyph
@@ -1528,3 +1543,4 @@ module.exports =
   XGLGlyph: XGLGlyph
   CircleXGLGlyph: CircleXGLGlyph
   SquareXGLGlyph: SquareXGLGlyph
+  AsteriskGLGlyph: AsteriskGLGlyph
