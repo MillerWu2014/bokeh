@@ -1305,8 +1305,8 @@ class DiamondGLGlyph extends MarkerGLGlyph
     // --- diamond
     float marker(vec2 P, float size)
     {
-        float x = SQRT_2 / 2.0 * (P.x * SQRT_2 - P.y);
-        float y = SQRT_2 / 2.0 * (P.x * SQRT_2 + P.y);
+        float x = SQRT_2 / 2.0 * (P.x * 1.5 - P.y);
+        float y = SQRT_2 / 2.0 * (P.x * 1.5 + P.y);
         float r1 = max(abs(x), abs(y)) - size / (2.0 * SQRT_2);
         return r1;
     }
@@ -1319,12 +1319,9 @@ class TriangleGLGlyph extends MarkerGLGlyph
   MARKERCODE: """
     float marker(vec2 P, float size)
     {
-        // Centering
-        P.x -= size * 0.1;
-        P.y -= size * 0.4;
-        // Diamond
-        float x = SQRT_2 / 2.0 * (P.x * 1.6 - P.y);
-        float y = SQRT_2 / 2.0 * (P.x * 1.6 + P.y);
+        P.y -= size * 0.3;
+        float x = SQRT_2 / 2.0 * (P.x * 1.7 - P.y);
+        float y = SQRT_2 / 2.0 * (P.x * 1.7 + P.y);
         float r1 = max(abs(x), abs(y)) - size / 1.6;
         float r2 = P.y;
         return max(r1, r2);  // Instersect diamond with rectangle
@@ -1338,9 +1335,9 @@ class InvertedTriangleGLGlyph extends MarkerGLGlyph
   MARKERCODE: """
     float marker(vec2 P, float size)
     {
-        // Diamond
-        float x = SQRT_2 / 2.0 * (P.x * 1.6 - P.y);
-        float y = SQRT_2 / 2.0 * (P.x * 1.6 + P.y);
+        P.y += size * 0.3;
+        float x = SQRT_2 / 2.0 * (P.x * 1.7 - P.y);
+        float y = SQRT_2 / 2.0 * (P.x * 1.7 + P.y);
         float r1 = max(abs(x), abs(y)) - size / 1.6;
         float r2 = - P.y;
         return max(r1, r2);  // Instersect diamond with rectangle
@@ -1352,4 +1349,5 @@ module.exports =
   CircleGLGlyph: CircleGLGlyph
   SquareGLGlyph: SquareGLGlyph
   DiamondGLGlyph: DiamondGLGlyph
+  TriangleGLGlyph: TriangleGLGlyph
   InvertedTriangleGLGlyph: InvertedTriangleGLGlyph
