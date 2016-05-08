@@ -1297,6 +1297,19 @@ class SquareGLGlyph extends MarkerGLGlyph
     }
     """
 
+class AnnulusGLGlyph extends MarkerGLGlyph
+
+  GLYPH: 'annulus'
+
+  MARKERCODE: """
+    float marker(vec2 P, float size)
+    {
+        float r1 = length(P) - size/2.0;
+        float r2 = length(P) - size/4.0;  // half width
+        return max(r1, -r2);
+    }
+    """
+
 class DiamondGLGlyph extends MarkerGLGlyph
 
   GLYPH: 'diamond'
@@ -1348,6 +1361,7 @@ module.exports =
   LineGLGlyph: LineGLGlyph
   CircleGLGlyph: CircleGLGlyph
   SquareGLGlyph: SquareGLGlyph
+  AnnulusGLGlyph: AnnulusGLGlyph
   DiamondGLGlyph: DiamondGLGlyph
   TriangleGLGlyph: TriangleGLGlyph
   InvertedTriangleGLGlyph: InvertedTriangleGLGlyph
